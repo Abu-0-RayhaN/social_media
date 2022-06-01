@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Log In.Link Up{% endblock title %}
+{% block css_block %}
+<style>
+    .sign_up{
+        width: 450px;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 10px ;
+    }
+    .abc{
+        text-align: center;
+        text-decoration: dotted;
+        color: rgb(62, 240, 62);
+        font-size: x-large;
+
+    }
+    body{
+        margin:20px;
+        
+    }
+</style>
+{% endblock css_block %}
+{% block content %}
+
+<div class="container sign_up">
+    <form method="POST">
+        <p class="abc text-bolder "><b><i>Log In</i></b></p>
+        {{form|crispy}}
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary ">Log In</button>
+    </form><hr>
+    <p>Don't have an account?<a href="{% url 'App_login:authsignup' %}">Sign Up</a></p>
+
+</div>
+{% endblock content %}

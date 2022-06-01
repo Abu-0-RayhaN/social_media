@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}
+{{profile.user}}'s profile.Link Up
+{% endblock title %}
+{% block css_block %}
+<style>
+  .crop {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+  }
+
+  .crop img {
+    width: 400px;
+    height: 300px;
+    margin: -75px 0 0 -100px;
+  }
+  body{
+    background-color:#b4b5b1;
+  }
+</style>
+{% endblock css_block %}
+{% block content %}
+<div class="container">
+    <div class="row pt-3">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6 text-center border border-rounded pt-3" style="border-radius:50px; ">
+            <img src="{{user.user_profile.profile_pic.url}}" height="200px" width="150px" class="rounded-circle mx-5">
+            <p><b>{{profile.full_name}}</b></p><button class="btn btn-succes"><a href="{% url 'App_login:editprofile' %}">Edit</a></button>
+            <p>{{profile.description|linebreaks}}</p>
+            <p>{{profile.dob}}</p>
+            <p>Personal Website:<a href="{{profile.website}}">Visit</a></p>
+            <p>Social Media:<a href="{{profile.facebook}}">Facebook</a></p>
+            <h6>{{user.post.count}} posts &nbsp;:{{user.follower.count}}&nbsp;following:{{user.following.count}} followers</h6>
+        </div>
+        <div class="col-lg-4">
+</div>
+<div class="container">
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Create Post
+</button>
+</div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Post a photo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" enctype="multipart/form-data">
+              {{form.as_p}}
+              {% csrf_token %}
+              <button type="submit">Post</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+<br>
+{% for post in user.post.all %}
+<div class="container row">
+    <div class=" container crop bg-dark m-1">
+      <img src="/media/{{post.image}}" title="{{post.caption}}">
+    </div>
+  </div><br><hr>
+    {% endfor %}
+{% endblock content %}
+

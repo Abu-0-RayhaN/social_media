@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Link Up{% endblock title %}
+{% block content %}
+{% comment %} {% if request.user not None %} {% endcomment %}
+<div class="container">
+    {% if search %}
+    {% for user in result %}
+    <div class="row">
+        <div class="col-sm-2 col-lg-4 ">
+            {% if user.user_profile.profile_pic %}
+            <img src="/media/{{user.user_profile.profile_pic}}" width="75px" height="75px" class="rounded-circle">
+            {% else %}
+            <img src="/media/default.png" width="75px" height="75px" class="rounded-circle">
+            {% endif %}
+        </div>
+        <div class="col-sm-10 col-sm-8">
+        <a href="{% url 'viewprofile' username=user.username %}">{{user.user_profile.full_name}}</a>
+        </div><h5>
+    {% endfor %}
+    </div>
+    <br>
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-8">
+        {% for post in posts %}
+        <div style="border:1px solid black; background-color:#afccb4; border-radius:7px;" class="">
+            <div style="padding:10px;">
+        {% if post.author.user_profile.profile_pic %}
+            <img src="/media/{{post.author.user_profile.profile_pic}}" width="75px" height="75px" class="rounded-circle"><nav class="float-right">{{post.upload_date}}</nav>
+            {% else %}
+            <img src="/media/default.png" width="75px" height="75px" class="rounded-circle"><div class="float-right">{{post.upload_date}}</div>
+            {% endif %}<br>
+            <a href="{% url 'viewprofile' username=post.author %}">{{post.author}}</a><br>
+            {{post.caption}}
+            </div>
+            <img src="/media/{{post.image}}" width="100%">
+            <i><b>{{ post.like_post.count}} love(s)</i></b>
+            <div style="padding:20px;">
+                {% if post.pk in like_post %}
+                <a href="{% url 'unliked' pk=post.pk %}"><i class="fa fa-heart" style="font-size:36px;"></i></a>
+                {% else %}
+                <a href="{% url 'liked' pk=post.pk %}"><i class="fa fa-heart-o" style="font-size:36px;"></i></a>
+                {% endif %}
+            </div>
+        </div><br>
+        <!---post card ends here-->
+        
+        {% endfor %}
+        </div>
+        <div class="col-sm-4 " style="background-color:#d6cece; height:500px; border:1px solid black; border-radius:40px ">
+            <div class="row">
+               <div class="col-sm-4"><br>
+                    {% if user.user_profile.profile_pic %}
+                    <a href="{% url 'profile' %}"><img src="/media/{{user.user_profile.profile_pic}}" width="75px" height="75px" class="rounded-circle"></a>
+                    {% else %}
+                    <a href="{% url 'profile' %}"><img src="/media/default.png" width="75px" height="75px" class="rounded-circle"></a>
+                    {% endif %}
+                </div>
+                <div class="col-sm-8"><br>
+                    <a href="{% url 'profile' %}">{{user.user_profile.full_name}}</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+{% comment %} {% else %}
+<h1>Nothing To Show</h1><p>Log In first to see photos<a href="{% url 'App_login:authlogin' %}">Log In</a></p>
+{% endif %} {% endcomment %}
+{% endblock content %}
